@@ -1,6 +1,6 @@
 module github.com/easonyen16/equal-love-link-crawler
 
-go 1.26.1
+go 1.26
 
 require golang.org/x/term v0.41.0
 

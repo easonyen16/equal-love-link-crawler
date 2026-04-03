@@ -1,10 +1,10 @@
 # equal-love-link-crawler
 
-A CLI tool to back up chat messages and media from the [EQUAL LOVE](https://equal-love.link) fan platform.
+A CLI tool to back up chat messages and media from the [= LOVE](https://equal-love.link.cosm.jp/) fan platform.
 
 ## Features
 
-- Login with your EQUAL LOVE account
+- Login with your =LOVE Link account
 - List all talk rooms with subscription status
 - Back up chat messages and media (images/videos) from subscribed rooms
 - Incremental backup — stops when it encounters already-saved content
@@ -12,7 +12,7 @@ A CLI tool to back up chat messages and media from the [EQUAL LOVE](https://equa
 
 ## Requirements
 
-- Go 1.21+
+- Go 1.26
 
 ## Usage
 
