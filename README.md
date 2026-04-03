@@ -12,7 +12,7 @@ A CLI tool to back up chat messages and media from the [EQUAL LOVE](https://equa
 
 ## Requirements
 
-- Go 1.21+
+- Go 1.26
 
 ## Usage
 

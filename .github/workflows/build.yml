@@ -35,3 +35,8 @@ jobs:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
         run: go build -o backup-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} ./cmd/backup
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: backup-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: backup-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}
