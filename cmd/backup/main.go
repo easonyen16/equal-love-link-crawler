@@ -15,6 +15,23 @@ import (
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
+	fmt.Println("グループ選択:")
+	fmt.Println("  1) =LOVE")
+	fmt.Println("  2) ≠ME")
+	fmt.Print("グループを選んでください (1/2): ")
+	scanner.Scan()
+	platformInput := strings.TrimSpace(scanner.Text())
+
+	var platform message.Platform
+	switch platformInput {
+	case "2":
+		platform = message.PlatformNotEqualMe
+	default:
+		platform = message.PlatformEqualLove
+	}
+
+	client := message.NewClient(platform)
+
 	fmt.Print("Email: ")
 	scanner.Scan()
 	email := strings.TrimSpace(scanner.Text())
@@ -27,16 +44,16 @@ func main() {
 	}
 	password := string(passwordBytes)
 
-	loginResp, err := message.Login(email, password)
+	loginResp, err := client.Login(email, password)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	talkRooms, err := message.GetTalkRooms(loginResp.AccessToken)
+	talkRooms, err := client.GetTalkRooms(loginResp.AccessToken)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	printTalkRoomSummary(talkRooms)
-	backup.All(loginResp.AccessToken, "download", talkRooms)
+	backup.All(client, loginResp.AccessToken, "download", talkRooms)
 }

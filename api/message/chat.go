@@ -9,16 +9,16 @@ import (
 )
 
 type ChatMedia struct {
-	ID                       int    `json:"id"`
-	FileExtension            string `json:"fileExtension"`
-	ContentType              string `json:"contentType"`
-	URL                      string `json:"url"`
-	CompressedURL            string `json:"compressedUrl"`
-	ThumbnailURL             string `json:"thumbnailUrl"`
-	CompressedThumbnailURL   string `json:"compressedThumbnailUrl"`
-	ThumbnailContentType     string `json:"thumbnailContentType"`
-	ThumbnailFileExtension   string `json:"thumbnailFileExtension"`
-	DurationInSecs           int    `json:"durationInSecs"`
+	ID                     int    `json:"id"`
+	FileExtension          string `json:"fileExtension"`
+	ContentType            string `json:"contentType"`
+	URL                    string `json:"url"`
+	CompressedURL          string `json:"compressedUrl"`
+	ThumbnailURL           string `json:"thumbnailUrl"`
+	CompressedThumbnailURL string `json:"compressedThumbnailUrl"`
+	ThumbnailContentType   string `json:"thumbnailContentType"`
+	ThumbnailFileExtension string `json:"thumbnailFileExtension"`
+	DurationInSecs         int    `json:"durationInSecs"`
 }
 
 type ChatMessage struct {
@@ -55,7 +55,7 @@ type chatAPIResponse struct {
 	Data           []ChatMessage `json:"data"`
 }
 
-func GetChat(accessToken string, talkRoomID, page, pageStartID int) (*ChatPage, error) {
+func (c *Client) GetChat(accessToken string, talkRoomID, page, pageStartID int) (*ChatPage, error) {
 	q := url.Values{}
 	q.Set("page", fmt.Sprintf("%d", page))
 	q.Set("pageSize", "100")
@@ -70,7 +70,7 @@ func GetChat(accessToken string, talkRoomID, page, pageStartID int) (*ChatPage, 
 
 	u := url.URL{
 		Scheme:   "https",
-		Host:     AppDomain,
+		Host:     c.cfg.appDomain,
 		Path:     fmt.Sprintf("/user/v2/chat/%d", talkRoomID),
 		RawQuery: q.Encode(),
 	}
@@ -79,13 +79,7 @@ func GetChat(accessToken string, talkRoomID, page, pageStartID int) (*ChatPage, 
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("User-Agent", HeaderUserAgent)
-	req.Header.Set("Accept-Language", HeaderAcceptLanguage)
-	req.Header.Set("X-Request-Verification-Key", HeaderXRequestVerificationKey)
-	req.Header.Set("X-Artist-Group-UUID", HeaderXArtistGroupUUID)
-	req.Header.Set("X-Device-UUID", HeaderXDeviceUUID)
-	req.Header.Set("Host", AppDomain)
-	req.Header.Set("Authorization", "Bearer "+accessToken)
+	c.setHeaders(req, c.cfg.appDomain, "Bearer "+accessToken)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {

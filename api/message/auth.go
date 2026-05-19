@@ -8,10 +8,6 @@ import (
 	"net/url"
 )
 
-const (
-	AuthDomain = "api.entertainment-platform-auth.cosm.jp"
-)
-
 type LoginResponse struct {
 	AccessToken  string `json:"accessToken"`
 	RefreshToken string `json:"refreshToken"`
@@ -29,17 +25,17 @@ type loginAPIResponse struct {
 	Data   LoginResponse `json:"data"`
 }
 
-func Login(username, password string) (*LoginResponse, error) {
+func (c *Client) Login(username, password string) (*LoginResponse, error) {
 	u := url.URL{
 		Scheme: "https",
-		Host:   AuthDomain,
+		Host:   c.cfg.authDomain,
 		Path:   "/login",
 	}
 
 	body, err := json.Marshal(loginRequest{
 		Username:   username,
 		Password:   password,
-		DeviceUUID: HeaderXDeviceUUID,
+		DeviceUUID: c.cfg.headers["X-Device-UUID"],
 	})
 	if err != nil {
 		return nil, err
@@ -49,14 +45,7 @@ func Login(username, password string) (*LoginResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("User-Agent", HeaderUserAgent)
-	req.Header.Set("Accept-Language", HeaderAcceptLanguage)
-	req.Header.Set("Content-Type", HeaderContentType)
-	req.Header.Set("X-Request-Verification-Key", HeaderXRequestVerificationKey)
-	req.Header.Set("X-Artist-Group-UUID", HeaderXArtistGroupUUID)
-	req.Header.Set("X-Device-UUID", HeaderXDeviceUUID)
-	req.Header.Set("Host", AuthDomain)
-	req.Header.Set("Authorization", "Bearer")
+	c.setHeaders(req, c.cfg.authDomain, "Bearer")
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -80,16 +69,16 @@ type refreshRequest struct {
 	DeviceUUID   string `json:"deviceUuid"`
 }
 
-func RefreshToken(accessToken, refreshToken string) (*LoginResponse, error) {
+func (c *Client) RefreshToken(accessToken, refreshToken string) (*LoginResponse, error) {
 	u := url.URL{
 		Scheme: "https",
-		Host:   AuthDomain,
+		Host:   c.cfg.authDomain,
 		Path:   "/refresh",
 	}
 
 	body, err := json.Marshal(refreshRequest{
 		RefreshToken: refreshToken,
-		DeviceUUID:   HeaderXDeviceUUID,
+		DeviceUUID:   c.cfg.headers["X-Device-UUID"],
 	})
 	if err != nil {
 		return nil, err
@@ -99,14 +88,7 @@ func RefreshToken(accessToken, refreshToken string) (*LoginResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("User-Agent", HeaderUserAgent)
-	req.Header.Set("Accept-Language", HeaderAcceptLanguage)
-	req.Header.Set("Content-Type", HeaderContentType)
-	req.Header.Set("X-Request-Verification-Key", HeaderXRequestVerificationKey)
-	req.Header.Set("X-Artist-Group-UUID", HeaderXArtistGroupUUID)
-	req.Header.Set("X-Device-UUID", HeaderXDeviceUUID)
-	req.Header.Set("Host", AuthDomain)
-	req.Header.Set("Authorization", "Bearer "+accessToken)
+	c.setHeaders(req, c.cfg.authDomain, "Bearer "+accessToken)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -123,4 +105,12 @@ func RefreshToken(accessToken, refreshToken string) (*LoginResponse, error) {
 	}
 
 	return &apiResp.Data, nil
+}
+
+func (c *Client) setHeaders(req *http.Request, host, authorization string) {
+	for k, v := range c.cfg.headers {
+		req.Header.Set(k, v)
+	}
+	req.Header.Set("Host", host)
+	req.Header.Set("Authorization", authorization)
 }

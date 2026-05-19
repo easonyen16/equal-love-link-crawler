@@ -54,6 +54,9 @@ func printTalkRoomSummary(talkRooms []message.TalkRoom) {
 	lineWidth := maxWidth + 2 + maxRomajiWidth
 	printTitle := func(title string) {
 		pad := (lineWidth - displayWidth(title)) / 2
+		if pad < 0 {
+			pad = 0
+		}
 		fmt.Printf("\n%s%s\n", strings.Repeat(" ", pad), title)
 	}
 

@@ -46,13 +46,13 @@ type talkRoomsAPIResponse struct {
 	Data   TalkRoomsResponse `json:"data"`
 }
 
-func GetTalkRooms(accessToken string) ([]TalkRoom, error) {
+func (c *Client) GetTalkRooms(accessToken string) ([]TalkRoom, error) {
 	q := url.Values{}
 	q.Set("page", "1")
 
 	u := url.URL{
 		Scheme:   "https",
-		Host:     AppDomain,
+		Host:     c.cfg.appDomain,
 		Path:     "/user/v2/talk-room",
 		RawQuery: q.Encode(),
 	}
@@ -61,13 +61,7 @@ func GetTalkRooms(accessToken string) ([]TalkRoom, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("User-Agent", HeaderUserAgent)
-	req.Header.Set("Accept-Language", HeaderAcceptLanguage)
-	req.Header.Set("X-Request-Verification-Key", HeaderXRequestVerificationKey)
-	req.Header.Set("X-Artist-Group-UUID", HeaderXArtistGroupUUID)
-	req.Header.Set("X-Device-UUID", HeaderXDeviceUUID)
-	req.Header.Set("Host", AppDomain)
-	req.Header.Set("Authorization", "Bearer "+accessToken)
+	c.setHeaders(req, c.cfg.appDomain, "Bearer "+accessToken)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {

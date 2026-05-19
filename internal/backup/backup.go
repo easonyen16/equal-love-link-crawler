@@ -90,7 +90,7 @@ func saveMessage(dir string, msg message.ChatMessage) (alreadyExists bool, err e
 	return false, nil
 }
 
-func Room(accessToken, downloadDir string, room message.TalkRoom) error {
+func Room(client *message.Client, accessToken, downloadDir string, room message.TalkRoom) error {
 	dir := filepath.Join(downloadDir, room.Name)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return err
@@ -100,7 +100,7 @@ func Room(accessToken, downloadDir string, room message.TalkRoom) error {
 	pageStartID := 0
 
 	for {
-		chatPage, err := message.GetChat(accessToken, room.ID, page, pageStartID)
+		chatPage, err := client.GetChat(accessToken, room.ID, page, pageStartID)
 		if err != nil {
 			return err
 		}
@@ -133,13 +133,13 @@ func Room(accessToken, downloadDir string, room message.TalkRoom) error {
 	return nil
 }
 
-func All(accessToken, downloadDir string, rooms []message.TalkRoom) {
+func All(client *message.Client, accessToken, downloadDir string, rooms []message.TalkRoom) {
 	for _, room := range rooms {
 		if !room.IsAccessible {
 			continue
 		}
 		fmt.Printf("\n%s のバックアップ開始...\n", room.Name)
-		if err := Room(accessToken, downloadDir, room); err != nil {
+		if err := Room(client, accessToken, downloadDir, room); err != nil {
 			fmt.Printf("  エラー: %v\n", err)
 		}
 	}
