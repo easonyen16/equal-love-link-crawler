@@ -1,10 +1,11 @@
 # equal-love-link-crawler
 
-A CLI tool to back up chat messages and media from the [= LOVE](https://equal-love.link.cosm.jp/) fan platform.
+A CLI tool to back up chat messages and media from the [=LOVE](https://equal-love.link.cosm.jp/) and [≠ME](https://not-equal-me.link.cosm.jp/) fan platforms.
 
 ## Features
 
-- Login with your =LOVE Link account
+- Supports both =LOVE and ≠ME platforms
+- Login with your account
 - List all talk rooms with subscription status
 - Back up chat messages and media (images/videos) from subscribed rooms
 - Incremental backup — stops when it encounters already-saved content
@@ -20,9 +21,13 @@ A CLI tool to back up chat messages and media from the [= LOVE](https://equal-lo
 go run ./cmd/backup
 ```
 
-You will be prompted for your email and password. The password input is hidden.
+You will be prompted to select a group, then enter your email and password. The password input is hidden.
 
 ```
+グループ選択:
+  1) =LOVE
+  2) ≠ME
+グループを選んでください (1/2): 1
 Email: your@email.com
 Password:
 
