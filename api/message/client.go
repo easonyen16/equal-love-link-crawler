@@ -11,6 +11,7 @@ const (
 type platformConfig struct {
 	authDomain string
 	appDomain  string
+	dirName    string
 	headers    map[string]string
 }
 
@@ -18,6 +19,7 @@ var platformConfigs = map[Platform]platformConfig{
 	PlatformEqualLove: {
 		authDomain: "api.entertainment-platform-auth.cosm.jp",
 		appDomain:  "v3.api.equal-love.link.cosm.jp",
+		dirName:    "equal-love",
 		headers: map[string]string{
 			"User-Agent":                 "io.cosm.fc.user.equal.love/1.2.0/Android/16/SM-A217F",
 			"Accept-Language":            "ja",
@@ -30,6 +32,7 @@ var platformConfigs = map[Platform]platformConfig{
 	PlatformNotEqualMe: {
 		authDomain: "api.entertainment-platform-auth.cosm.jp",
 		appDomain:  "v3.api.not-equal-me.link.cosm.jp",
+		dirName:    "not-equal-me",
 		headers: map[string]string{
 			"User-Agent":                 "io.cosm.fc.user.not.equal.me/1.3.0/Android/16/SM-A217F",
 			"Accept-Language":            "ja",
@@ -42,6 +45,7 @@ var platformConfigs = map[Platform]platformConfig{
 	PlatformNearlyEqualJoy: {
 		authDomain: "api.entertainment-platform-auth.cosm.jp",
 		appDomain:  "v3.api.equal-love.link.cosm.jp",
+		dirName:    "nearly-equal-joy",
 		headers: map[string]string{
 			"User-Agent":                 "io.cosm.fc.user.nearly.equal.joy/1.3.11/iOS/27.0/iPhone",
 			"Accept-Language":            "ja",
@@ -59,4 +63,8 @@ type Client struct {
 
 func NewClient(platform Platform) *Client {
 	return &Client{cfg: platformConfigs[platform]}
+}
+
+func (c *Client) DirName() string {
+	return c.cfg.dirName
 }
