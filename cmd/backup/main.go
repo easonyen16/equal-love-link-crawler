@@ -18,7 +18,8 @@ func main() {
 	fmt.Println("グループ選択:")
 	fmt.Println("  1) =LOVE")
 	fmt.Println("  2) ≠ME")
-	fmt.Print("グループを選んでください (1/2): ")
+	fmt.Println("  3) ≒JOY")
+	fmt.Print("グループを選んでください (1/2/3): ")
 	scanner.Scan()
 	platformInput := strings.TrimSpace(scanner.Text())
 
@@ -26,6 +27,8 @@ func main() {
 	switch platformInput {
 	case "2":
 		platform = message.PlatformNotEqualMe
+	case "3":
+		platform = message.PlatformNearlyEqualJoy
 	default:
 		platform = message.PlatformEqualLove
 	}

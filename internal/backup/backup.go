@@ -134,12 +134,13 @@ func Room(client *message.Client, accessToken, downloadDir string, room message.
 }
 
 func All(client *message.Client, accessToken, downloadDir string, rooms []message.TalkRoom) {
+	groupDir := filepath.Join(downloadDir, client.DirName())
 	for _, room := range rooms {
 		if !room.IsAccessible {
 			continue
 		}
 		fmt.Printf("\n%s のバックアップ開始...\n", room.Name)
-		if err := Room(client, accessToken, downloadDir, room); err != nil {
+		if err := Room(client, accessToken, groupDir, room); err != nil {
 			fmt.Printf("  エラー: %v\n", err)
 		}
 	}
