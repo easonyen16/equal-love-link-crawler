@@ -1,10 +1,11 @@
 # equal-love-link-crawler
 
-A CLI tool to back up chat messages and media from the [=LOVE](https://equal-love.link.cosm.jp/) and [≠ME](https://not-equal-me.link.cosm.jp/) fan platforms.
+A CLI tool to back up chat messages and media from the [=LOVE](https://equal-love.link.cosm.jp/), [≠ME](https://not-equal-me.link.cosm.jp/) and [≒JOY](https://nearly-equal-joy.link.cosm.jp/) fan platforms.
 
 ## Features
 
-- Supports both =LOVE and ≠ME platforms
+- Supports =LOVE, ≠ME and ≒JOY platforms
+- Backups are organized into per-group folders (`equal-love` / `not-equal-me` / `nearly-equal-joy`)
 - Login with your account
 - List all talk rooms with subscription status
 - Back up chat messages and media (images/videos) from subscribed rooms
@@ -27,7 +28,8 @@ You will be prompted to select a group, then enter your email and password. The 
 グループ選択:
   1) =LOVE
   2) ≠ME
-グループを選んでください (1/2): 1
+  3) ≒JOY
+グループを選んでください (1/2/3): 1
 Email: your@email.com
 Password:
 
@@ -47,14 +49,15 @@ Password:
 
 ```
 download/
-├── 佐々木 舞香/
-│   ├── 20260101120000.txt        # text message
-│   ├── 20260101120000.jpeg       # single media attachment
-│   ├── 20260102093000.txt
-│   ├── 20260102093000-1.jpeg     # multiple media attachments
-│   └── 20260102093000-2.jpeg
-└── 齋藤 樹愛羅/
-    └── ...
+└── equal-love/                       # per-group folder
+    ├── 佐々木 舞香/
+    │   ├── 20260101120000.txt        # text message
+    │   ├── 20260101120000.jpeg       # single media attachment
+    │   ├── 20260102093000.txt
+    │   ├── 20260102093000-1.jpeg     # multiple media attachments
+    │   └── 20260102093000-2.jpeg
+    └── 齋藤 樹愛羅/
+        └── ...
 ```
 
 - File names are formatted as `YYYYMMDDHHmmss` in JST
