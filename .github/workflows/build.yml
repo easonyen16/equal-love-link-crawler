@@ -6,6 +6,11 @@ on:
     paths-ignore:
       - "*.md"
 
+# A newer run for the same branch / PR cancels the one still running.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
